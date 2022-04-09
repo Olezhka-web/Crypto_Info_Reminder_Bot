@@ -6,7 +6,7 @@
   "scripts": {
     "start:app": "rimraf dist && npm run lint &&  tsc-watch --outDir ./dist --onSuccess \"npm run start:dev\" --onFailure \"'echo Compilation Failed'\"",
     "start:dev": "node -r dotenv/config --inspect=0.0.0.0:9227 ./dist/app.js",
-    "start": "npm run build && node ./dist/app.js",
+    "start": "node ./dist/app.js",
     "build": "rimraf dist && tsc",
     "tsc": "rimraf dist && npm run lint && tsc --watch",
     "lint": "eslint --fix --ext .ts,.js src"
@@ -21,8 +21,7 @@
     "express": "^4.17.1",
     "mongoose": "5.13.12",
     "node-cron": "^3.0.0",
-    "node-telegram-bot-api": "^0.53.0",
-    "rimraf": "^3.0.2"
+    "node-telegram-bot-api": "^0.53.0"
   },
   "devDependencies": {
     "@types/axios": "^0.14.0",
