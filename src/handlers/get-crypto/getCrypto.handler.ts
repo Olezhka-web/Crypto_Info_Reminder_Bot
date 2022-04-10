@@ -12,7 +12,7 @@ export const getCryptoHandler = async (userObj: IUser): Promise<void> => {
         return;
     }
 
-    const sortedCryptoData = crypto_data.sort((a, b) => a.cryptoName !== b.cryptoName ? a.cryptoName < b.cryptoName ? -1 : 1 : 0);
+    const sortedCryptoData = crypto_data.sort((a, b) => a.cryptoNumber - b.cryptoNumber);
 
     const cryptoDataMessage = await cryptoService.findAndGetCryptoInfo(sortedCryptoData);
 
