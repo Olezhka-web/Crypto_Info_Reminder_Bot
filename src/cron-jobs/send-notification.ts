@@ -13,7 +13,7 @@ export const sendNotification = async (): Promise<void> => {
             continue;
         }
 
-        let result = '';
+        let result = 'CRYPTO NOTIFICATION MESSAGES';
 
         for (const [index, cryptoObj] of crypto_data.entries()) {
             const { cryptoNumber, cryptoName, price, border } = cryptoObj;
@@ -40,6 +40,7 @@ export const sendNotification = async (): Promise<void> => {
             result += `\nMarket Price: ${(+foundMarketCrypto.price).toFixed(3)}`;
             result += `\nProfit: ${profitDollar}$ / ${profitPercent}%`;
             result += `\nStatus: ${+profitDollar > 0 ? '\u{1F4C8}' : '\u{1F4C9}' }`;
+            result += `\nChanged border: from ${border}% to ${newBorder}%`;
 
             crypto_data[index] = { cryptoNumber, cryptoName, price, border: newBorder };
 
