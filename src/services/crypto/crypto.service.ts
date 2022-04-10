@@ -43,6 +43,7 @@ class CryptoService {
             const profitPercent = ((+profitDollar) * 100 / +foundCrypto.price).toFixed(2);
 
             return {
+                cryptoNumber: cryptoDataObj.cryptoNumber,
                 cryptoName: cryptoDataObj.cryptoName,
                 price: cryptoDataObj.price.toFixed(3),
                 marketPrice: (+foundCrypto.price).toFixed(3),
@@ -53,7 +54,8 @@ class CryptoService {
 
         for (const cryptoObj of cryptoFullArr) {
             result += '\n\n';
-            result += `\nCrypro Name: ${cryptoObj.cryptoName}`;
+            result += `\nCryptoID: ${cryptoObj.cryptoNumber}`;
+            result += `\nCrypto Name: ${cryptoObj.cryptoName}`;
             result += `\nYour Price: ${cryptoObj.price}`;
             result += `\nMarket Price: ${cryptoObj.marketPrice}`;
             result += `\nProfit: ${cryptoObj.profit}`;
