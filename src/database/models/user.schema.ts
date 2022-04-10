@@ -25,9 +25,23 @@ export const UserSchema: Schema<IUser> = new Schema<IUser>({
     },
     crypto_data: [
         {
-            cryptoName: String,
-            price: Number,
-            border: Number
+            cryptoNumber: {
+                type: Number,
+                unique: true,
+                required: true
+            },
+            cryptoName: {
+                type: String,
+                required: true
+            },
+            price: {
+                type: Number,
+                required: true
+            },
+            border: {
+                type: Number,
+                required: true
+            }
         }
     ],
     createdAt: {

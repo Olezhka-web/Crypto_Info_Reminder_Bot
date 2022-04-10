@@ -16,19 +16,21 @@ export const sendNotification = async (): Promise<void> => {
         let result = '';
 
         for (const [index, cryptoObj] of crypto_data.entries()) {
-            const foundMarketCrypto = cryptoMarket.find((crypto) => crypto.symbol === cryptoObj.cryptoName);
+            const { cryptoNumber, cryptoName, price, border } = cryptoObj;
+
+            const foundMarketCrypto = cryptoMarket.find((crypto) => crypto.symbol === cryptoName);
 
             if (!foundMarketCrypto) {
                 continue;
             }
 
-            const profitDollar = (+foundMarketCrypto.price - cryptoObj.price).toFixed(3);
+            const profitDollar = (+foundMarketCrypto.price - price).toFixed(3);
 
             const profitPercent = ((+profitDollar) * 100 / +foundMarketCrypto.price).toFixed(2);
 
-            const border = cryptoService.getCryptoBorder(+profitPercent);
+            const newBorder = cryptoService.getCryptoBorder(+profitPercent);
 
-            if (+border === cryptoObj.border) {
+            if (+newBorder === border) {
                 continue;
             }
 
@@ -39,7 +41,7 @@ export const sendNotification = async (): Promise<void> => {
             result += `\nProfit: ${profitDollar}$ / ${profitPercent}%`;
             result += `\nStatus: ${+profitDollar > 0 ? '\u{1F4C8}' : '\u{1F4C9}' }`;
 
-            crypto_data[index] = { cryptoName: cryptoObj.cryptoName, price: cryptoObj.price, border };
+            crypto_data[index] = { cryptoNumber, cryptoName, price, border: newBorder };
 
             await userService.updateUser({ _id }, { crypto_data });
         }

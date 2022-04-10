@@ -4,7 +4,7 @@ import { IActiveEvent, IUser } from '../../models';
 import { activeEventService, cryptoService, userService } from '../../services';
 
 export const createCryptoHandler = async (data: string, activeEventObj: IActiveEvent, userObj: IUser): Promise<void> => {
-    const [cryptoName, price] = data.trim().toUpperCase().split('\n');
+    const [cryptoName, price] = data.trim().toUpperCase().split('\n').map((el) => el.trim());
 
     const { chatId, _id, crypto_data } = userObj;
 
@@ -42,7 +42,17 @@ export const createCryptoHandler = async (data: string, activeEventObj: IActiveE
 
     const border = cryptoService.getCryptoBorder(+profitPercent);
 
-    await userService.updateUser({ _id }, { crypto_data: [...crypto_data, { cryptoName, price: +price, border }] });
+    await userService.updateUser({ _id }, {
+        crypto_data: [
+            ...crypto_data,
+            {
+                cryptoNumber: crypto_data.length > 0 ? crypto_data.length + 1 : 1,
+                cryptoName,
+                price: +price,
+                border
+            }
+        ]
+    });
 
     await activeEventService.deleteActiveEvent({ _id: activeEventObj._id });
 

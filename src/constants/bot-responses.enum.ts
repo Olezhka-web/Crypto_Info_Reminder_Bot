@@ -47,29 +47,27 @@ export const BotResponsesEnum = {
                                         '\n    ---------------------------' +
                                 `</pre>`,
 
-    BOT_RESPONSE_UPDATE_CRYPTO_ACTION: 'Write the name, old price and new price of your cryptocurrency' +
+    BOT_RESPONSE_UPDATE_CRYPTO_ACTION: 'Write the unique ID and new price of your cryptocurrency' +
                                         ' to edit from a new line. ' +
                                         `\n\n                            <b>FOR EXAMPLE: </b>` +
                                 `<pre>` +
                                         '\n    ---------------------------' +
                                         '\n    |                         |' +
                                         '\n    |                         |' +
-                                        '\n    |         BTCUSDT         |' +
-                                        '\n    |         45.4566         |' +
+                                        '\n    |            1            |' +
                                         '\n    |         38.4566         |' +
                                         '\n    |                         |' +
                                         '\n    |                         |' +
                                         '\n    ---------------------------' +
                                 `</pre>`,
 
-    BOT_RESPONSE_DELETE_CRYPTO_ACTION: 'Write the name and price of your cryptocurrency to delete from a new line. ' +
+    BOT_RESPONSE_DELETE_CRYPTO_ACTION: 'Write the unique ID of your cryptocurrency to delete. ' +
                                         `\n\n                            <b>FOR EXAMPLE: </b>` +
                                 `<pre>` +
                                         '\n    ---------------------------' +
                                         '\n    |                         |' +
                                         '\n    |                         |' +
-                                        '\n    |         BTCUSDT         |' +
-                                        '\n    |         45.4566         |' +
+                                        '\n    |            1            |' +
                                         '\n    |                         |' +
                                         '\n    |                         |' +
                                         '\n    ---------------------------' +
@@ -84,8 +82,7 @@ export const BotResponsesEnum = {
 
     BOT_RESPONSE_CRYPTO_ALREADY_CREATED: 'You have already created such a cryptocurrency, with such a price!',
 
-    BOT_RESPONSE_CRYPTO_NOT_FOUND_DB: 'No such cryptocurrency was found! Please check the ' +
-                                        'cryptocurrency name and price!',
+    BOT_RESPONSE_CRYPTO_NOT_FOUND_BY_ID: 'No such cryptocurrency was found! Please check ID',
 
     BOT_RESPONSE_NO_CRYPTO: 'You do not have any cryptocurrency!',
 

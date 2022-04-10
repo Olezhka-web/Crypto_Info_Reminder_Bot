@@ -4,11 +4,11 @@ import { IActiveEvent, IUser } from '../../models';
 import { activeEventService, cryptoService, userService } from '../../services';
 
 export const updateCryptoHandler = async (data: string, activeEventObj: IActiveEvent, userObj: IUser): Promise<void> => {
-    const [cryptoName, oldPrice, price] = data.trim().toUpperCase().split('\n');
+    const [cryptoNumber, price] = data.trim().toUpperCase().split('\n').map((el) => el.trim());
 
     const { chatId, _id, crypto_data } = userObj;
 
-    if (!Number(oldPrice) || !Number(price)) {
+    if (!Number(cryptoNumber) || !Number(price)) {
         await activeEventService.deleteActiveEvent({ _id: activeEventObj._id });
 
         await bot.sendMessage(chatId, BotResponsesEnum.BOT_RESPONSE_ERROR_NUMBER);
@@ -16,15 +16,17 @@ export const updateCryptoHandler = async (data: string, activeEventObj: IActiveE
         return;
     }
 
-    const findCryptoObjIndex = crypto_data.findIndex(el => el.cryptoName === cryptoName && el.price === +oldPrice);
+    const findCryptoObjIndex = crypto_data.findIndex(el => el.cryptoNumber === +cryptoNumber);
 
     if (findCryptoObjIndex === -1) {
         await activeEventService.deleteActiveEvent({ _id: activeEventObj._id });
 
-        await bot.sendMessage(chatId, BotResponsesEnum.BOT_RESPONSE_CRYPTO_NOT_FOUND_DB);
+        await bot.sendMessage(chatId, BotResponsesEnum.BOT_RESPONSE_CRYPTO_NOT_FOUND_BY_ID);
 
         return;
     }
+
+    const { cryptoName } = crypto_data[findCryptoObjIndex];
 
     const foundMarketCrypto = await cryptoService.findOneCryptoByName(cryptoName);
 
@@ -42,11 +44,16 @@ export const updateCryptoHandler = async (data: string, activeEventObj: IActiveE
 
     const border = cryptoService.getCryptoBorder(+profitPercent);
 
-    crypto_data[findCryptoObjIndex] = { cryptoName, price: +price, border };
+    crypto_data[findCryptoObjIndex] = {
+        cryptoNumber: +cryptoNumber,
+        cryptoName,
+        price: +price,
+        border
+    };
 
     await userService.updateUser({ _id }, { crypto_data });
 
     await activeEventService.deleteActiveEvent({ _id: activeEventObj._id });
 
-    await bot.sendMessage(chatId, `Your crypto ${cryptoName} ${oldPrice} changed to ${price}!`);
+    await bot.sendMessage(chatId, `Your crypto ${cryptoName} ${price} updated!`);
 };
