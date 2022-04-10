@@ -13,9 +13,11 @@ export const sendNotification = async (): Promise<void> => {
             continue;
         }
 
-        let result = 'CRYPTO NOTIFICATION MESSAGES';
+        const sortedCryptoData = crypto_data.sort((a, b) => a.cryptoNumber - b.cryptoNumber);
 
-        for (const [index, cryptoObj] of crypto_data.entries()) {
+        let result = '';
+
+        for (const [index, cryptoObj] of sortedCryptoData.entries()) {
             const { cryptoNumber, cryptoName, price, border } = cryptoObj;
 
             const foundMarketCrypto = cryptoMarket.find((crypto) => crypto.symbol === cryptoName);
@@ -35,6 +37,7 @@ export const sendNotification = async (): Promise<void> => {
             }
 
             result += '\n\n';
+            result += `\nCryptoID: ${cryptoObj.cryptoNumber}`;
             result += `\nCrypro Name: ${cryptoObj.cryptoName}`;
             result += `\nYour Price: ${cryptoObj.price.toFixed(3)}`;
             result += `\nMarket Price: ${(+foundMarketCrypto.price).toFixed(3)}`;
@@ -42,13 +45,13 @@ export const sendNotification = async (): Promise<void> => {
             result += `\nStatus: ${+profitDollar > 0 ? '\u{1F4C8}' : '\u{1F4C9}' }`;
             result += `\nChanged border: from ${border}% to ${newBorder}%`;
 
-            crypto_data[index] = { cryptoNumber, cryptoName, price, border: newBorder };
+            sortedCryptoData[index] = { cryptoNumber, cryptoName, price, border: newBorder };
 
-            await userService.updateUser({ _id }, { crypto_data });
+            await userService.updateUser({ _id }, { crypto_data: sortedCryptoData });
         }
 
         if (result) {
-            await bot.sendMessage(chatId, result);
+            await bot.sendMessage(chatId, `CRYPTO NOTIFICATION MESSAGES ${result}`);
         }
     }
 };
